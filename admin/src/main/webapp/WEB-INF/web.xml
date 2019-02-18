@@ -4,15 +4,7 @@
 
 <web-app>
   <display-name>Shopping Cart Web Application</display-name>
-  
-  <!-- 	to connect the dispatcher servlet and applicationContext -->
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-            /WEB-INF/dispatcher-servlet.xml,
-            /WEB-INF/applicationContext.xml
-        </param-value>
-    </context-param>
+ 
     
     <servlet>
         <servlet-name>dispatcher</servlet-name>
