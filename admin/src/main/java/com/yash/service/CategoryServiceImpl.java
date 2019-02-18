@@ -8,12 +8,10 @@ import com.yash.dao.CatogertDao;
 import com.yash.model.Category;
 import com.yash.service.CategoryService;
 
-@Service(value="categoryService")
-public class CategoryServiceImpl  implements CategoryService{
-	
+@Service(value = "categoryService")
+public class CategoryServiceImpl implements CategoryService {
+
 	CatogertDao dao;
-	
-	
 
 	public CatogertDao getDao() {
 		return dao;
@@ -25,32 +23,32 @@ public class CategoryServiceImpl  implements CategoryService{
 
 	@Override
 	public List<Category> getAllCategory() {
-		
+
 		return dao.getAllCategory();
 	}
 
 	@Override
 	public Category getCategoryById(String categoryId) {
-		
+
 		return dao.getCategoryById(categoryId);
 	}
 
 	@Override
 	public void deleteCategory(String categoryId) {
 		dao.deleteCategory(categoryId);
-		
+
 	}
 
 	@Override
 	public void addCategory(Category category) {
 		dao.addCategory(category);
-		
+
 	}
 
 	@Override
 	public void editCategory(Category product) {
 		dao.editCategory(product);
-		
+
 	}
 
 }
