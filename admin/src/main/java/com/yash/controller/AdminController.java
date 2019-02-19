@@ -1,54 +1,38 @@
-package com.yash.controller;
-
-import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.yash.model.Category;
-import com.yash.service.CategoryService;
-
-@Controller
+@RestController
 public class AdminController {
-
 	@Autowired
-	private CategoryService categoryService;
-
-	@RequestMapping(value = "/admin/category/addCategory", method = RequestMethod.POST)
-	public String addCategory(
-			@Valid @ModelAttribute(value = "categoryFormObj") Category category) {
-		categoryService.addCategory(category);
-
-		return "redirect:/getAllCategory";
-	}
-
-	@RequestMapping("/admin/delete/{categoryId}")
-	public String deleteProduct(
-			@PathVariable(value = "categoryId") String categoryId) {
-
-		categoryService.deleteCategory(categoryId);
-
-		return "redirect:/getAllProducts";
-	}
-
-	@RequestMapping(value = "/admin/category/editCategory/{categoryId}")
-	public ModelAndView getEditCategory(
-			@PathVariable(value = "categoryId") String categoryId) {
-		Category category = categoryService.getCategoryById(categoryId);
-		return new ModelAndView("editProduct", "editProductObj", category);
-	}
+	CategoryService categoryService;
+ 
+	@RequestMapping(value = "/getAllProducts", method = RequestMethod.GET, headers = "Accept=application/json")
+	public List  getProductList() {
+		System.out.println("in controller");
+		List listOfProducts = sellerService.getAllProducts();
+		return listOfProducts;
+		
+		}
 	
-	@RequestMapping("/getCategoryList")
-	public @ResponseBody List<Category> getCategoryListInJson() {
-		return categoryService.getAllCategory();
+	@RequestMapping(value = "/getProduct/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Product getProductById(@PathVariable int id) {
+		return sellerService.getProduct(id);
 	}
-
+ 
+	@RequestMapping(value = "/addProduct", method = RequestMethod.POST, headers = "Accept=application/json")
+	public void addCountry(@RequestBody Product product) { 
+		sellerService.addProduct(product);
+ 
+	}
+ 
+	@RequestMapping(value = "/updateProduct", method = RequestMethod.PUT, headers = "Accept=application/json")
+	public void updateCountry(@RequestBody Product product) {
+		sellerService.updateProduct(product);
+	}
+ 
+	@RequestMapping(value = "/deleteProduct/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public void deleteCountry(@PathVariable("id") int id) {
+		sellerService.deleteProduct(id);  
+	} 
 }

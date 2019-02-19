@@ -2,53 +2,38 @@ package com.yash.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.yash.dao.CatogertDao;
 import com.yash.model.Category;
-import com.yash.service.CategoryService;
 
-@Service(value = "categoryService")
+@Service("categoryService")
 public class CategoryServiceImpl implements CategoryService {
 
-	CatogertDao dao;
-
-	public CatogertDao getDao() {
-		return dao;
+	@Autowired
+	CatogertDao catogertDao;
+	
+	@Transactional
+	public List getAllcategorys() {
+		return catogertDao.getAllcategorys();
+	}
+	@Transactional
+	public Category getcategory(int id) {
+		
+		return catogertDao.getCategory(id);
+	}
+	@Transactional
+	public category addcategory(Category category) {
+		return catogertDao.addCategory(category);
 	}
 
-	public void setDao(CatogertDao dao) {
-		this.dao = dao;
+		
 	}
-
-	@Override
-	public List<Category> getAllCategory() {
-
-		return dao.getAllCategory();
-	}
-
-	@Override
-	public Category getCategoryById(String categoryId) {
-
-		return dao.getCategoryById(categoryId);
-	}
-
-	@Override
-	public void deleteCategory(String categoryId) {
-		dao.deleteCategory(categoryId);
-
-	}
-
-	@Override
-	public void addCategory(Category category) {
-		dao.addCategory(category);
-
-	}
-
-	@Override
-	public void editCategory(Category product) {
-		dao.editCategory(product);
-
+	@Transactional
+	public void deletecategory(int id) {
+		CatogertDao.deletecategory(id);
+		
 	}
 
 }

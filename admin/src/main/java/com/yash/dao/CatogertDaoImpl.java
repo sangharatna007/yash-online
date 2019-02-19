@@ -24,10 +24,8 @@ public class CatogertDaoImpl implements CatogertDao {
 	@Override
 	public List<Category> getAllCategory() {
 
-		// Reading the records from the table
+	
 		Session session = sessionFactory.openSession();
-		// List<Category> category =
-		// session.createQuery("from Category").list();
 		List<Category> category = session.createCriteria(Category.class).list();
 		System.out.println("----- List of Category-----");
 		System.out.println(category);
@@ -68,7 +66,7 @@ public class CatogertDaoImpl implements CatogertDao {
 	}
 
 	@Override
-	public void editCategory(Category product) {
+	public void udateCategory(Category category) {
 		// TODO Auto-generated method stub
 
 	}
