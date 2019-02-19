@@ -5,7 +5,7 @@ import java.util.List;
 import com.yash.model.Category;
 
 public interface CategoryService {
-	
+
 	public List getAllCategorys();
 
 	public Category getCategory(int id);

@@ -5,7 +5,7 @@ import java.util.List;
 import com.yash.model.Category;
 
 public interface CategoryDao {
-	
+
 	public List<Category> getAllCategory();
 
 	Category getCategoryById(int categoryId);

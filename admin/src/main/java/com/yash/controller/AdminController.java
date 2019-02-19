@@ -16,35 +16,34 @@ import com.yash.service.CategoryService;
 public class AdminController {
 	@Autowired
 	CategoryService categoryService;
-	
 
 	@RequestMapping(value = "/getAllCategorys", method = RequestMethod.GET, headers = "Accept=application/json")
-	public List  getProductList() {
+	public List getProductList() {
 		System.out.println("inside controller");
 		List listOfProducts = categoryService.getAllCategorys();
 		return listOfProducts;
-		
-		}
-	
+
+	}
+
 	@RequestMapping(value = "/getCategory/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
 	public Category getProductById(@PathVariable int id) {
 		return categoryService.getCategory(id);
 	}
- 
+
 	@RequestMapping(value = "/addProduct", method = RequestMethod.POST, headers = "Accept=application/json")
-	public void addCountry(@RequestBody Category category ) { 
+	public void addCountry(@RequestBody Category category) {
 		categoryService.addCategory(category);
- 
+
 	}
- 
+
 	@RequestMapping(value = "/updateCategory", method = RequestMethod.PUT, headers = "Accept=application/json")
 	public void updateCategory(@RequestBody Category category) {
 		categoryService.updateCategory(category);
 	}
- 
+
 	@RequestMapping(value = "/deleteCategory/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
 	public void deleteCategory(@PathVariable("id") int id) {
-		categoryService.deleteCategory(id);  
+		categoryService.deleteCategory(id);
 	}
 
 }

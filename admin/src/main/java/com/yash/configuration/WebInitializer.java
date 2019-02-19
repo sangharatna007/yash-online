@@ -20,8 +20,8 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	}
 
 	/*
-	 * @Override protected Filter[] getServletFilters() { Filter[] singleton = { new
-	 * CORSFilter() }; return singleton; }
+	 * @Override protected Filter[] getServletFilters() { Filter[] singleton = {
+	 * new CORSFilter() }; return singleton; }
 	 */
 
 }

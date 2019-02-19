@@ -4,16 +4,17 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.yash.model.Category;
 
 @Repository
 public class CategoryDaoImpl implements CategoryDao {
-	
-	private SessionFactory  sessionFactory;
-	
-	
+
+	@Autowired
+	private SessionFactory sessionFactory;
+
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
@@ -23,9 +24,11 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	public List<Category> getAllCategory() {
-
-		Session session = this.sessionFactory.getCurrentSession();
+		System.out.println("in Dao");
+		Session session = this.sessionFactory.openSession();
 		List categoryList = session.createQuery("from Category").list();
+		System.out.println("categoryList");
+		System.out.println(categoryList);
 		return categoryList;
 	}
 
@@ -44,7 +47,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	public void updateCategory(Category category) {
 		Session session = this.sessionFactory.getCurrentSession();
 		session.update(category);
-		
+
 	}
 
 	public void deleteCategory(int id) {
@@ -54,8 +57,5 @@ public class CategoryDaoImpl implements CategoryDao {
 			session.delete(p);
 		}
 	}
-
-
-	
 
 }
