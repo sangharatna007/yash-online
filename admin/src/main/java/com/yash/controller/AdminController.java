@@ -12,13 +12,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yash.exception.NoDataByIdException;
 import com.yash.exception.NoDataException;
 import com.yash.model.Category;
+import com.yash.model.Payment;
 import com.yash.service.CategoryService;
+import com.yash.service.PaymentService;
 
 @RestController
 public class AdminController {
 
 	@Autowired
 	CategoryService categoryService;
+	
+	@Autowired
+	PaymentService paymentService;
 
 	@RequestMapping(value = "/categories", method = RequestMethod.GET, headers = "Accept=application/json")
 	public List<Category> getCategoryList() {
@@ -40,7 +45,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/addCategory", method = RequestMethod.POST, headers = "Accept=application/json")
-	public void addCountry(@RequestBody Category category) {
+	public void addCategory(@RequestBody Category category) {
 		if (category == null || category.equals(" ")) {
 			throw new NoDataException("no data");
 		}
@@ -48,7 +53,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/updateCategory/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-	public void updateCountry(@RequestBody Category category, @PathVariable Integer id) {
+	public void updateCategory(@RequestBody Category category, @PathVariable Integer id) {
 		if (category == null || category.equals(" ")) {
 			throw new NoDataException("no data");
 		}
@@ -58,5 +63,23 @@ public class AdminController {
 	@RequestMapping(value = "/deleteCategory/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
 	public void deleteCategory(@PathVariable int id) {
 		categoryService.deleteCategory(id);
+	}
+	
+	@RequestMapping(value = "/payments", method = RequestMethod.GET, headers = "Accept=application/json")
+	public List<Payment> getPayamentList() {
+		List<Payment> listOfPayments = paymentService.modeOfPayment();
+		if (null == listOfPayments || listOfPayments.isEmpty()) {
+			throw new NoDataException("no data");
+		}
+		return listOfPayments;
+
+	}
+	
+	@RequestMapping(value = "/addPayment", method = RequestMethod.POST, headers = "Accept=application/json")
+	public void addPayment(@RequestBody Payment payment) {
+		if (payment == null || payment.equals(" ")) {
+			throw new NoDataException("no data");
+		}
+		paymentService.addPaymentMode(payment);
 	}
 }

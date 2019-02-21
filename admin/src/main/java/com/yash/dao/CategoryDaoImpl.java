@@ -3,6 +3,7 @@ package com.yash.dao;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.yash.model.Category;
 
 @Repository
+@Qualifier("categoryDao")
 public class CategoryDaoImpl implements CategoryDao {
 
 	@Autowired

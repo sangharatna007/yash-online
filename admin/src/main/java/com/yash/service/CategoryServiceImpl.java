@@ -3,12 +3,14 @@ package com.yash.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.yash.dao.CategoryDao;
 import com.yash.model.Category;
 
 @Service("categoryService")
+@Qualifier("categoryDao")
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
