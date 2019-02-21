@@ -2,9 +2,9 @@ package com.yash.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.yash.model.Category;
@@ -13,49 +13,35 @@ import com.yash.model.Category;
 public class CategoryDaoImpl implements CategoryDao {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	JdbcTemplate jdbcTemplate;
 
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
+	public List<Category> getAllCategories() {
+		List<Category> categories = jdbcTemplate.query("SELECT * FROM category",
+				new BeanPropertyRowMapper(Category.class));
+		return categories;
 	}
 
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
+	public Category getCategory(int id) {
+		Category category = (Category) jdbcTemplate.queryForObject("SELECT * FROM category where category_id = ? ",
+				new Object[] { id }, new BeanPropertyRowMapper(Category.class));
 
-	public List<Category> getAllCategory() {
-		System.out.println("in Dao");
-		Session session = this.sessionFactory.openSession();
-		List categoryList = session.createQuery("from Category").list();
-		System.out.println("categoryList");
-		System.out.println(categoryList);
-		return categoryList;
-	}
-
-	public Category getCategoryById(int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Category category = (Category) session.load(Category.class, new Integer(id));
 		return category;
 	}
 
-	public Category addCategory(Category category) {
-		Session session = this.sessionFactory.getCurrentSession();
-		session.persist(category);
-		return category;
+	public void addCategory(Category category) {
+		jdbcTemplate.update("INSERT INTO category (categoryId, categoryTitle) VALUES (?, ?)", category.getCategoryId(),
+				category.getCategoryTitle());
+
 	}
 
-	public void updateCategory(Category category) {
-		Session session = this.sessionFactory.getCurrentSession();
-		session.update(category);
+	public void updateCategory(Category category, int id) {
+		jdbcTemplate.update("UPDATE category SET categoryTitle = ?  WHERE categoryId = ? ", category.getCategoryTitle(),
+				id);
 
 	}
 
 	public void deleteCategory(int id) {
-		Session session = this.sessionFactory.getCurrentSession();
-		Category p = (Category) session.load(Category.class, new Integer(id));
-		if (null != p) {
-			session.delete(p);
-		}
+		jdbcTemplate.update("DELETE from category WHERE categoryId = ? ", id);
 	}
 
 }

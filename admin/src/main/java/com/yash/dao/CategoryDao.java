@@ -6,14 +6,14 @@ import com.yash.model.Category;
 
 public interface CategoryDao {
 
-	public List<Category> getAllCategory();
+	public List<Category> getAllCategories();
 
-	Category getCategoryById(int categoryId);
+	public Category getCategory(int id);
 
-	void deleteCategory(int categoryId);
+	public void addCategory(Category category);
 
-	Category addCategory(Category category);
+	public void updateCategory(Category category, int id);
 
-	void updateCategory(Category category);
+	public void deleteCategory(int id);
 
 }

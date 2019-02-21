@@ -1,38 +1,29 @@
 package com.yash.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-@Entity
-@Table(name = "category")
-public class Category {
+public class Category implements Serializable {
 
-	@Id
-	@Column(name = "categoryId")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private static final long serialVersionUID = -1864198348558983648L;
 
-	@Column(name = "title")
-	private String titile;
+	private int categoryId;
 
-	public Integer getId() {
-		return id;
+	private String categoryTitle;
+
+	public int getCategoryId() {
+		return categoryId;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
 	}
 
-	public String getTitile() {
-		return titile;
+	public String getCategoryTitle() {
+		return categoryTitle;
 	}
 
-	public void setTitile(String titile) {
-		this.titile = titile;
+	public void setCategoryTitle(String categoryTitle) {
+		this.categoryTitle = categoryTitle;
 	}
 
 }

@@ -1,9 +1,6 @@
 package com.yash.service;
 
-import java.beans.Transient;
 import java.util.List;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,35 +14,29 @@ public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	CategoryDao categoryDao;
 
-	@Transactional
-	public List getAllCategorys() {
+	public List<Category> getAllCategories() {
 
-		return categoryDao.getAllCategory();
+		return categoryDao.getAllCategories();
 	}
 
-	@Transactional
 	public Category getCategory(int id) {
 
-		return categoryDao.getCategoryById(id);
+		return categoryDao.getCategory(id);
 	}
 
-	@Transactional
-	public Category addCategory(Category category) {
-
-		return categoryDao.addCategory(category);
+	public void addCategory(Category category) {
+		categoryDao.addCategory(category);
+		
 	}
 
-	@Transactional
-	public void updateCategory(Category category) {
-
-		categoryDao.updateCategory(category);
-
+	public void updateCategory(Category category, int id) {
+		categoryDao.updateCategory(category, id);
+		
 	}
 
-	@Transactional
 	public void deleteCategory(int id) {
 		categoryDao.deleteCategory(id);
-
+		
 	}
 
 }
