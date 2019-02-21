@@ -26,7 +26,7 @@ public class AdminController {
 	PaymentService paymentService;
 
 	@RequestMapping(value = "/categories", method = RequestMethod.GET, headers = "Accept=application/json")
-	public List<Category> getCategoryList() {
+	public List<Category> categoryList() {
 		List<Category> listOfCategories = categoryService.getAllCategories();
 		if (null == listOfCategories || listOfCategories.isEmpty()) {
 			throw new NoDataException("no data");
@@ -35,8 +35,8 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value = "/category/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Category getCategoryById(@PathVariable int id) {
+	@RequestMapping(value = "/categories/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	public Category categoryById(@PathVariable int id) {
 		Category categoryData = categoryService.getCategory(id);
 		if (null == categoryData || categoryData.equals(" ")) {
 			throw new NoDataByIdException("no data");
@@ -44,7 +44,7 @@ public class AdminController {
 		return categoryData;
 	}
 
-	@RequestMapping(value = "/addCategory", method = RequestMethod.POST, headers = "Accept=application/json")
+	@RequestMapping(value = "/categories", method = RequestMethod.POST, headers = "Accept=application/json")
 	public void addCategory(@RequestBody Category category) {
 		if (category == null || category.equals(" ")) {
 			throw new NoDataException("no data");
@@ -52,7 +52,7 @@ public class AdminController {
 		categoryService.addCategory(category);
 	}
 
-	@RequestMapping(value = "/updateCategory/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
+	@RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
 	public void updateCategory(@RequestBody Category category, @PathVariable Integer id) {
 		if (category == null || category.equals(" ")) {
 			throw new NoDataException("no data");
@@ -60,7 +60,7 @@ public class AdminController {
 		categoryService.updateCategory(category, id);
 	}
 
-	@RequestMapping(value = "/deleteCategory/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	@RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
 	public void deleteCategory(@PathVariable int id) {
 		categoryService.deleteCategory(id);
 	}
@@ -75,11 +75,16 @@ public class AdminController {
 
 	}
 	
-	@RequestMapping(value = "/addPayment", method = RequestMethod.POST, headers = "Accept=application/json")
-	public void addPayment(@RequestBody Payment payment) {
+	@RequestMapping(value = "/payments", method = RequestMethod.POST, headers = "Accept=application/json")
+	public void paymentMode( Payment payment) {
 		if (payment == null || payment.equals(" ")) {
 			throw new NoDataException("no data");
 		}
-		paymentService.addPaymentMode(payment);
+		paymentService.paymentMode(payment);
+	}
+	
+	@RequestMapping(value = "/payments/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public void removeModeOfPayment(@PathVariable int id) {
+		paymentService.removePaymentMode(id);
 	}
 }

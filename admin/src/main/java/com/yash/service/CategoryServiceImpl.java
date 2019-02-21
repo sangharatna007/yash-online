@@ -10,7 +10,7 @@ import com.yash.dao.CategoryDao;
 import com.yash.model.Category;
 
 @Service("categoryService")
-@Qualifier("categoryDao")
+/*@Qualifier("categoryDao")*/
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired

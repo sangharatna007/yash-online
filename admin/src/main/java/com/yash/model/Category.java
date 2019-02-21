@@ -9,6 +9,13 @@ public class Category implements Serializable {
 	private int categoryId;
 
 	private String categoryTitle;
+	
+	public Category(){}
+
+	public Category(int id, String title) {
+		this.categoryId = id;
+		this.categoryTitle = title;
+	}
 
 	public int getCategoryId() {
 		return categoryId;

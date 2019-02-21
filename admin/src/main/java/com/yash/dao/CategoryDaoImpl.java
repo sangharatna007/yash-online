@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.yash.model.Category;
 
 @Repository
-@Qualifier("categoryDao")
+/*@Qualifier("categoryDao")*/
 public class CategoryDaoImpl implements CategoryDao {
 
 	@Autowired
@@ -24,7 +24,7 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	public Category getCategory(int id) {
-		Category category = (Category) jdbcTemplate.queryForObject("SELECT * FROM category where category_id = ? ",
+		Category category = (Category) jdbcTemplate.queryForObject("SELECT * FROM category where categoryid = ? ",
 				new Object[] { id }, new BeanPropertyRowMapper(Category.class));
 
 		return category;

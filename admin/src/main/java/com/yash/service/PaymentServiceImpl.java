@@ -10,7 +10,6 @@ import com.yash.dao.PaymentDao;
 import com.yash.model.Payment;
 
 @Service("paymentService")
-@Qualifier("paymentDao")
 public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
@@ -18,15 +17,15 @@ public class PaymentServiceImpl implements PaymentService {
 
 	public List<Payment> modeOfPayment() {
 
-		return paymentDao.modeOfPayment();
+		return paymentDao.modeOfPayments();
 	}
 
-	public void addPaymentMode(Payment payment) {
-		paymentDao.addPaymentMode(payment);
+	public void paymentMode(Payment payment) {
+		paymentDao.paymentMode(payment);
 	}
 
-	public void deletePaymentMode(int id) {
-		paymentDao.deletePaymentMode(id);
+	public void removePaymentMode(int id) {
+		paymentDao.removePaymentMode(id);
 
 	}
 

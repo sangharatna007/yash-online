@@ -6,10 +6,10 @@ import com.yash.model.Payment;
 
 public interface PaymentDao {
 
-	public List<Payment> modeOfPayment();
+	public List<Payment> modeOfPayments();
 
-	public void addPaymentMode(Payment payment);
+	public void paymentMode(Payment payment);
 	
-	public void deletePaymentMode(int id);
+	public void removePaymentMode(int id);
 
 }

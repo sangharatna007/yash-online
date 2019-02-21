@@ -8,7 +8,7 @@ public interface PaymentService {
 
 	public List<Payment> modeOfPayment();
 
-	public void addPaymentMode(Payment payment);
+	public void paymentMode(Payment payment);
 	
-	public void deletePaymentMode(int id);
+	public void removePaymentMode(int id);
 }

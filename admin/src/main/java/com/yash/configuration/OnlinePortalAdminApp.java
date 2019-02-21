@@ -26,9 +26,9 @@ public class OnlinePortalAdminApp {
 	public DataSource dataSource() {
 		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 		driverManagerDataSource.setUrl(env.getProperty("jdbc.url"));
-		driverManagerDataSource.setUsername(env.getProperty("jdbc.user"));
+		driverManagerDataSource.setUsername(env.getProperty("jdbc.username"));
 		driverManagerDataSource.setPassword(env.getProperty("jdbc.password"));
-		driverManagerDataSource.setDriverClassName(env.getProperty("jdbc.driver"));
+		driverManagerDataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
 		return driverManagerDataSource;
 	}
 

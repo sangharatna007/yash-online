@@ -14,19 +14,19 @@ public class PaymentDaoImpl implements PaymentDao {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	public List<Payment> modeOfPayment() {
-		List<Payment> modePaymentList = jdbcTemplate.query("SELECT * FROM payment_master",
+	public List<Payment> modeOfPayments() {
+		List<Payment> modePaymentList = jdbcTemplate.query("SELECT * FROM payment",
 				new BeanPropertyRowMapper(Payment.class));
 		return modePaymentList;
 	}
 
-	public void addPaymentMode(Payment payment) {
+	public void paymentMode(Payment payment) {
 		jdbcTemplate.update("INSERT INTO payment (id, typeOfPayment) VALUES (?, ?)", payment.getId(),
 				payment.getTypeOfPayment());
 
 	}
 
-	public void deletePaymentMode(int id ) {
+	public void removePaymentMode(int id ) {
 		
 		jdbcTemplate.update("DELETE from payment WHERE id = ? ", id);
 		
