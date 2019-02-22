@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import com.yash.model.Category;
 import com.yash.model.Payment;
 
 @Repository
@@ -31,6 +33,17 @@ public class PaymentDaoImpl implements PaymentDao {
 		jdbcTemplate.update("DELETE from payment WHERE id = ? ", id);
 		
 
+	}
+
+	public Payment getPayment(int id) {
+		Payment payment = (Payment) jdbcTemplate.queryForObject("SELECT * FROM payment where id = ? ",
+				new Object[] { id }, new BeanPropertyRowMapper(Category.class));
+		return payment;
+	}
+
+	public boolean exists(Payment payment) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

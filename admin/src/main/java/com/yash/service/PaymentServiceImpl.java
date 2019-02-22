@@ -29,4 +29,14 @@ public class PaymentServiceImpl implements PaymentService {
 
 	}
 
+	public Payment getPayment(int id) {
+		
+		return paymentDao.getPayment(id);
+	}
+
+	public boolean exists(Payment payment) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

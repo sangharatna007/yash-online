@@ -14,21 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.yash.model.Category;
+import com.yash.model.Payment;
 import com.yash.service.CategoryService;
+import com.yash.service.PaymentService;
 
 @RestController
 @RequestMapping("categories")
 public class AdminController {
 
 	@Autowired
-	private CategoryService categoryServie;
+	private CategoryService categoryService;
+	
+	@Autowired
+	private PaymentService paymentService;
 
-	// =========================================================== Get The All
-	// Categories =================================
+	// =========================================================== Get The All Categories =================================
 
 	@GetMapping(produces = "application/json")
 	public ResponseEntity<List<Category>> getAllCategories() {
-		List<Category> categoris = categoryServie.getAllCategories();
+		List<Category> categoris = categoryService.getAllCategories();
 		if (categoris == null || categoris.isEmpty()) {
 			return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
 		}
@@ -40,7 +44,7 @@ public class AdminController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Category> getById(@PathVariable("id") int id) {
-		Category cateogry = categoryServie.getCategory(id);
+		Category cateogry = categoryService.getCategory(id);
 		if (cateogry == null) {
 			return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
 
@@ -52,10 +56,10 @@ public class AdminController {
 
 	public ResponseEntity<Void> addNewCategories(@RequestBody Category category, UriComponentsBuilder ucBuilder) {
 
-		if (categoryServie.exists(category)) {
+		if (categoryService.exists(category)) {
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
-		categoryServie.addCategory(category);
+		categoryService.addCategory(category);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/categories/{id}").buildAndExpand(category.getCategoryId()).toUri());
@@ -66,7 +70,7 @@ public class AdminController {
 	
 	public ResponseEntity<Category> updateTheExistingCategories(@PathVariable int id, @RequestBody Category category)
 	{
-		Category currentCategory = categoryServie.getCategory(id);
+		Category currentCategory = categoryService.getCategory(id);
 		if(currentCategory == null)
 		{
 			return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
@@ -74,7 +78,7 @@ public class AdminController {
 		
 		currentCategory.setCategoryId(category.getCategoryId());
 		currentCategory.setCategoryTitle(category.getCategoryTitle());
-		categoryServie.updateCategory(currentCategory);
+		categoryService.updateCategory(currentCategory);
 		
 		return new ResponseEntity<Category>(currentCategory, HttpStatus.OK);
 	}
@@ -84,13 +88,68 @@ public class AdminController {
 	
     public ResponseEntity<Void> deleteExistingCategories(@PathVariable("id") int id){
        
-    	Category category = categoryServie.getCategory(id);
+    	Category category = categoryService.getCategory(id);
 
         if (category == null){
             return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
         }
 
-        categoryServie.deleteCategory(id);
+        categoryService.deleteCategory(id);
         return new ResponseEntity<Void>(HttpStatus.OK);
     }
+    
+    
+ // =========================================================== Get The All Payment Mode =================================
+
+ 	@GetMapping(produces = "application/json")
+ 	public ResponseEntity<List<Payment>> getAllPaymentMode() {
+ 		List<Payment> payment = paymentService.modeOfPayment();
+ 		if (payment == null || payment.isEmpty()) {
+ 			return new ResponseEntity<List<Payment>>(HttpStatus.NO_CONTENT);
+ 		}
+
+ 		return new ResponseEntity<List<Payment>>(payment, HttpStatus.OK);
+ 	}
+
+ 	// =================================================== Get Payment By the Id =================================
+
+ 	@GetMapping("/{id}")
+ 	public ResponseEntity<Payment> getPaymentById(@PathVariable("id") int id) {
+ 		Payment payment = paymentService.getPayment(id);
+ 		if (payment == null) {
+ 			return new ResponseEntity<Payment>(HttpStatus.NOT_FOUND);
+
+ 		}
+ 		return new ResponseEntity<Payment>(HttpStatus.OK);
+ 	}
+
+ 	// ======================================= Creating new Payment Mode ===================================
+
+ 	public ResponseEntity<Void> addNewPayments(@RequestBody Payment payment, UriComponentsBuilder ucBuilder) {
+
+ 		if (paymentService.exists(payment)) {
+ 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+ 		}
+ 		paymentService.paymentMode(payment);
+
+ 		HttpHeaders headers = new HttpHeaders();
+ 		headers.setLocation(ucBuilder.path("/payments/{id}").buildAndExpand(payment.getId()).toUri());
+ 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+ 	}
+ 	
+ 	public ResponseEntity<Void> deleteExistingPayementMode(@PathVariable("id") int id){
+        
+    
+    	Payment payment = paymentService.getPayment(id);
+    	
+
+        if (payment == null){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
+        paymentService.removePaymentMode(id);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+
 }
