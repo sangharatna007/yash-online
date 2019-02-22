@@ -48,7 +48,7 @@ public class AdminController {
 		return new ResponseEntity<Category>(HttpStatus.OK);
 	}
 
-	// ======================================= Creating new Categoies ===================================
+	// ======================================= Creating new Categories ===================================
 
 	public ResponseEntity<Void> addNewCategories(@RequestBody Category category, UriComponentsBuilder ucBuilder) {
 
@@ -78,4 +78,19 @@ public class AdminController {
 		
 		return new ResponseEntity<Category>(currentCategory, HttpStatus.OK);
 	}
+	
+	// =================================== Deleted Existing User ==============================
+	
+	
+    public ResponseEntity<Void> deleteExistingCategories(@PathVariable("id") int id){
+       
+    	Category category = categoryServie.getCategory(id);
+
+        if (category == null){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
+        categoryServie.deleteCategory(id);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
 }
