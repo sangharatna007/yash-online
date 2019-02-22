@@ -10,6 +10,8 @@ public interface CategoryService {
 	public List<Category> getAllCategories();
 
 	public Category getCategory(int id);
+	
+	public Category getCategoryByName(String  name);
 
 	public void addCategory(Category category);
 

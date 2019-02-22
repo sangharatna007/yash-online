@@ -1,7 +1,6 @@
 package com.yash.controller;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -34,7 +33,7 @@ public class AdminControllerTest {
 	private CategoryServiceImpl categorieService;
 
 	@InjectMocks
-	AdminController controller;
+	AdminController controller = new AdminController();
 
 	@Before
 	public void init() {

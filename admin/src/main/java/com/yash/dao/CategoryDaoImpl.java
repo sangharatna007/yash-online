@@ -22,7 +22,7 @@ public class CategoryDaoImpl implements CategoryDao {
 		return categories;
 	}
 
-	public Category getCategory(int id) {
+	public Category getCategoryById(int id) {
 		Category category = (Category) jdbcTemplate.queryForObject("SELECT * FROM category where categoryid = ? ",
 				new Object[] { id }, new BeanPropertyRowMapper(Category.class));
 
@@ -36,7 +36,8 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	public void updateCategory(Category category) {
-		jdbcTemplate.update("UPDATE category SET categoryTitle = ?  WHERE categoryId = ? ", category.getCategoryTitle(), category.getCategoryId());
+		jdbcTemplate.update("UPDATE category SET categoryTitle = ?  WHERE categoryId = ? ", category.getCategoryTitle(),
+				category.getCategoryId());
 
 	}
 
@@ -45,8 +46,16 @@ public class CategoryDaoImpl implements CategoryDao {
 	}
 
 	public boolean exists(Category category) {
-		
-		return false;
+
+		return getCategoryByName(category.getCategoryTitle()) != null;
+	}
+
+	public Category getCategoryByName(String name) {
+
+		Category category = (Category) jdbcTemplate.queryForObject("SELECT * FROM category where categoryTitle = ? ",
+				new Object[] { name }, new BeanPropertyRowMapper(Category.class));
+
+		return category;
 	}
 
 }

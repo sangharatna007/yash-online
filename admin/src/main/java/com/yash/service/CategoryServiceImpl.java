@@ -22,7 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	public Category getCategory(int id) {
 
-		return categoryDao.getCategory(id);
+		return categoryDao.getCategoryById(id);
 	}
 
 	public void addCategory(Category category) {
@@ -41,8 +41,12 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	public boolean exists(Category category) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return categoryDao.exists(category);
+	}
+
+	public Category getCategoryByName(String name) {
+		return categoryDao.getCategoryByName(name);
 	}
 
 }
