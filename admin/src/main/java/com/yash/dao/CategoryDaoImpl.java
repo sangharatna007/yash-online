@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import com.yash.model.Category;
 
 @Repository
-/*@Qualifier("categoryDao")*/
 public class CategoryDaoImpl implements CategoryDao {
 
 	@Autowired
@@ -36,14 +35,18 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	}
 
-	public void updateCategory(Category category, int id) {
-		jdbcTemplate.update("UPDATE category SET categoryTitle = ?  WHERE categoryId = ? ", category.getCategoryTitle(),
-				id);
+	public void updateCategory(Category category) {
+		jdbcTemplate.update("UPDATE category SET categoryTitle = ?  WHERE categoryId = ? ", category.getCategoryTitle(), category.getCategoryId());
 
 	}
 
 	public void deleteCategory(int id) {
 		jdbcTemplate.update("DELETE from category WHERE categoryId = ? ", id);
+	}
+
+	public boolean exists(Category category) {
+		
+		return false;
 	}
 
 }

@@ -3,88 +3,79 @@ package com.yash.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import com.yash.exception.NoDataByIdException;
-import com.yash.exception.NoDataException;
 import com.yash.model.Category;
-import com.yash.model.Payment;
 import com.yash.service.CategoryService;
-import com.yash.service.PaymentService;
 
 @RestController
+@RequestMapping("categories")
 public class AdminController {
 
 	@Autowired
-	CategoryService categoryService;
+	private CategoryService categoryServie;
+
+	// =========================================================== Get The All
+	// Categories =================================
+
+	@GetMapping(produces = "application/json")
+	public ResponseEntity<List<Category>> getAllCategories() {
+		List<Category> categoris = categoryServie.getAllCategories();
+		if (categoris == null || categoris.isEmpty()) {
+			return new ResponseEntity<List<Category>>(HttpStatus.NO_CONTENT);
+		}
+
+		return new ResponseEntity<List<Category>>(categoris, HttpStatus.OK);
+	}
+
+	// =================================================== Get By the Id =================================
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Category> getById(@PathVariable("id") int id) {
+		Category cateogry = categoryServie.getCategory(id);
+		if (cateogry == null) {
+			return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
+
+		}
+		return new ResponseEntity<Category>(HttpStatus.OK);
+	}
+
+	// ======================================= Creating new Categoies ===================================
+
+	public ResponseEntity<Void> addNewCategories(@RequestBody Category category, UriComponentsBuilder ucBuilder) {
+
+		if (categoryServie.exists(category)) {
+			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+		}
+		categoryServie.addCategory(category);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(ucBuilder.path("/categories/{id}").buildAndExpand(category.getCategoryId()).toUri());
+		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	}
+
+	// ================================== Update existing Categories ======================================
 	
-	@Autowired
-	PaymentService paymentService;
-
-	@RequestMapping(value = "/categories", method = RequestMethod.GET, headers = "Accept=application/json")
-	public List<Category> categoryList() {
-		List<Category> listOfCategories = categoryService.getAllCategories();
-		if (null == listOfCategories || listOfCategories.isEmpty()) {
-			throw new NoDataException("no data");
+	public ResponseEntity<Category> updateTheExistingCategories(@PathVariable int id, @RequestBody Category category)
+	{
+		Category currentCategory = categoryServie.getCategory(id);
+		if(currentCategory == null)
+		{
+			return new ResponseEntity<Category>(HttpStatus.NOT_FOUND);
 		}
-		return listOfCategories;
-
-	}
-
-	@RequestMapping(value = "/categories/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-	public Category categoryById(@PathVariable int id) {
-		Category categoryData = categoryService.getCategory(id);
-		if (null == categoryData || categoryData.equals(" ")) {
-			throw new NoDataByIdException("no data");
-		}
-		return categoryData;
-	}
-
-	@RequestMapping(value = "/categories", method = RequestMethod.POST, headers = "Accept=application/json")
-	public void addCategory(@RequestBody Category category) {
-		if (category == null || category.equals(" ")) {
-			throw new NoDataException("no data");
-		}
-		categoryService.addCategory(category);
-	}
-
-	@RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-	public void updateCategory(@RequestBody Category category, @PathVariable Integer id) {
-		if (category == null || category.equals(" ")) {
-			throw new NoDataException("no data");
-		}
-		categoryService.updateCategory(category, id);
-	}
-
-	@RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-	public void deleteCategory(@PathVariable int id) {
-		categoryService.deleteCategory(id);
-	}
-	
-	@RequestMapping(value = "/payments", method = RequestMethod.GET, headers = "Accept=application/json")
-	public List<Payment> getPayamentList() {
-		List<Payment> listOfPayments = paymentService.modeOfPayment();
-		if (null == listOfPayments || listOfPayments.isEmpty()) {
-			throw new NoDataException("no data");
-		}
-		return listOfPayments;
-
-	}
-	
-	@RequestMapping(value = "/payments", method = RequestMethod.POST, headers = "Accept=application/json")
-	public void paymentMode( Payment payment) {
-		if (payment == null || payment.equals(" ")) {
-			throw new NoDataException("no data");
-		}
-		paymentService.paymentMode(payment);
-	}
-	
-	@RequestMapping(value = "/payments/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-	public void removeModeOfPayment(@PathVariable int id) {
-		paymentService.removePaymentMode(id);
+		
+		currentCategory.setCategoryId(category.getCategoryId());
+		currentCategory.setCategoryTitle(category.getCategoryTitle());
+		categoryServie.updateCategory(currentCategory);
+		
+		return new ResponseEntity<Category>(currentCategory, HttpStatus.OK);
 	}
 }

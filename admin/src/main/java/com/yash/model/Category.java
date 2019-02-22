@@ -2,12 +2,16 @@ package com.yash.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 public class Category implements Serializable {
 
 	private static final long serialVersionUID = -1864198348558983648L;
 
+	@NotNull
 	private int categoryId;
 
+	@NotNull
 	private String categoryTitle;
 	
 	public Category(){}

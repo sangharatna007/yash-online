@@ -12,8 +12,10 @@ public interface CategoryDao {
 
 	public void addCategory(Category category);
 
-	public void updateCategory(Category category, int id);
+	public void updateCategory(Category category);
 
 	public void deleteCategory(int id);
+	
+	boolean exists(Category category);
 
 }

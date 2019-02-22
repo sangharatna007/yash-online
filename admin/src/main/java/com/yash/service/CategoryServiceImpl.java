@@ -10,7 +10,6 @@ import com.yash.dao.CategoryDao;
 import com.yash.model.Category;
 
 @Service("categoryService")
-/*@Qualifier("categoryDao")*/
 public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
@@ -31,8 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
 		
 	}
 
-	public void updateCategory(Category category, int id) {
-		categoryDao.updateCategory(category, id);
+	public void updateCategory(Category category) {
+		categoryDao.updateCategory(category);
 		
 	}
 
@@ -40,5 +39,12 @@ public class CategoryServiceImpl implements CategoryService {
 		categoryDao.deleteCategory(id);
 		
 	}
+
+	public boolean exists(Category category) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 
 }
