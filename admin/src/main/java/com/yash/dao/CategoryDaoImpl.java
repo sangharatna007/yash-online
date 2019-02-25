@@ -45,10 +45,7 @@ public class CategoryDaoImpl implements CategoryDao {
 		jdbcTemplate.update("DELETE from category WHERE categoryId = ? ", id);
 	}
 
-	public boolean exists(Category category) {
-
-		return getCategoryByName(category.getCategoryTitle()) != null;
-	}
+	
 
 	public Category getCategoryByName(String name) {
 
@@ -58,4 +55,10 @@ public class CategoryDaoImpl implements CategoryDao {
 		return category;
 	}
 
+	public boolean exists(Category category) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
 }

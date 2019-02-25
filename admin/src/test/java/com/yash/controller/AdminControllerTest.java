@@ -1,61 +1,79 @@
-package com.yash.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Arrays;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.yash.model.Category;
 import com.yash.service.CategoryServiceImpl;
 
+@RunWith(MockitoJUnitRunner.class)
 public class AdminControllerTest {
+	private static final Logger log = Logger.getLogger(AdminControllerTest.class);
+	public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(),
+			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 
-	private MockMvc mockMvc;
-
-	@Autowired
-	private CategoryServiceImpl categorieService;
-
+	@Mock
+	public CategoryServiceImpl categoriesServiceImpl;
 	@InjectMocks
-	AdminController controller = new AdminController();
+	private AdminController adminController;
+	MockMvc mockmvc;
 
 	@Before
-	public void init() {
+	public void setup() {
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
+		mockmvc = MockMvcBuilders.standaloneSetup(adminController).build();
 	}
-
+	
 	@Test
-	public void test_get_all_success() throws Exception {
-		List<Category> categoris = Arrays.asList(new Category(1, "Electronics"), new Category(2, "Furntitures"));
-
-		when(categorieService.getAllCategories()).thenReturn(categoris);
-
-		mockMvc.perform(get("/categories")).andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-				.andExpect(jsonPath("$[0].categoryId", is(1)))
-				.andExpect(jsonPath("$[0].categoryTitle", is("Electronics")))
-				.andExpect(jsonPath("$[1].categoryId", is(2)))
-				.andExpect(jsonPath("$[1].categoryTitle", is("Furntitures")));
-
-		verify(categorieService, times(1)).getAllCategories();
-		verifyNoMoreInteractions(categorieService);
+	public void testGetAllCategory() throws Exception{
+		List<Category> categoryList=new ArrayList<Category>();
+		Category category=new Category(1, "Electronics");
+		categoryList.add(category);
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter(); 
+		String toBeCompareJson = ow.writeValueAsString(categoryList).replace(" ", "").replace("\n", "").replace("\r", ""); 
+		Mockito.when(categoriesServiceImpl.getAllCategories()).thenReturn(categoryList); 
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+											.get("/cate")
+											.contentType(APPLICATION_JSON_UTF8);
+		MvcResult result = mockmvc.perform(requestBuilder).andReturn();
+		log.info("mock result response code " + result.getResponse().getStatus());
+		log.info("mock result response " + result.getResponse().getContentAsString());
+		assertEquals(200, result.getResponse().getStatus());
+		assertEquals(toBeCompareJson, result.getResponse().getContentAsString().replace(" ", ""));
 	}
-
+	
+	@Test
+	public void testGetProductUnderCategoryById() throws Exception{
+		List<Product> productList=new ArrayList<Product>();
+		Product product=new	Product(1,"Mobile", 10, 10000.00,1,1,1); 
+		productList.add(product);
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter(); 
+		String toBeCompareJson = ow.writeValueAsString(productList).replace(" ", "").replace("\n", "").replace("\r", "");
+		Mockito.when(categoriesServiceImpl.getProductUnderCategory(Matchers.anyInt())).thenReturn(productList);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders
+											.get("/category/{id}/products","1");
+		MvcResult result = mockmvc.perform(requestBuilder).andReturn();
+		log.info("mock result response code " + result.getResponse().getStatus());
+		log.info("mock result response " + result.getResponse().getContentAsString());
+		assertEquals(200, result.getResponse().getStatus());
+		assertEquals(toBeCompareJson, result.getResponse().getContentAsString().replace(" ", ""));
+	}
 }

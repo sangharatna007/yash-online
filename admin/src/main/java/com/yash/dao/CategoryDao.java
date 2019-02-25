@@ -18,6 +18,6 @@ public interface CategoryDao {
 
 	public void deleteCategory(int id);
 	
-	boolean exists(Category category);
+	public boolean exists(Category category);
 
 }
